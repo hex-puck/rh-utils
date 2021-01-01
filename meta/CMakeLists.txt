@@ -7,7 +7,7 @@ target_include_directories(meta INTERFACE
 file(GLOB headers RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.h)
 list(REMOVE_ITEM headers meta.h)
 
-if (${headers})
+if (headers)
     file(COPY ${headers} DESTINATION ${RH_BUILD_INCLUDEDIR}/meta)
     install(FILES ${headers} DESTINATION ${RH_INSTALL_INCLUDEDIR}/meta)
 endif ()
