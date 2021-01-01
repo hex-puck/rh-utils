@@ -5,7 +5,7 @@
 
 void meta_test::type_at_test() noexcept
 {
-    std::printf("%s", __func__);
+    std::printf("%s\n", __func__);
 
     using std::is_same;
     using namespace rh_utils::meta;
