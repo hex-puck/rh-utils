@@ -16,4 +16,5 @@ file(COPY meta.h DESTINATION ${RH_BUILD_INCLUDEDIR})
 install(FILES meta.h DESTINATION ${RH_INSTALL_INCLUDEDIR})
 
 install(TARGETS meta EXPORT meta-config)
-install(EXPORT meta-config DESTINATION lib/cmake)
+install(EXPORT meta-config DESTINATION lib/cmake/meta
+        NAMESPACE rh-utils::)
