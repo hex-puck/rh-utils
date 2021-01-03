@@ -58,6 +58,7 @@ TEST(in_range, integral_signed_signed)
 
     // big -> small
     EXPECT_FALSE(in_range<std::int8_t>(nl<std::int32_t>::max()));
+    EXPECT_TRUE(in_range<std::int8_t>((std::int32_t) 0));
     EXPECT_FALSE(in_range<std::int8_t>(nl<std::int32_t>::lowest()));
 }
 
@@ -75,6 +76,7 @@ TEST(in_range, integral_signed_unsigned)
 
     // big -> small
     EXPECT_FALSE(in_range<std::uint8_t>(nl<std::int32_t>::max()));
+    EXPECT_TRUE(in_range<std::uint8_t>((std::int32_t) 0));
     EXPECT_FALSE(in_range<std::uint8_t>(nl<std::int32_t>::lowest()));
 }
 
