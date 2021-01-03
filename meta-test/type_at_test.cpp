@@ -1,14 +1,12 @@
-#include "type_at_test.h"
-#include <cstdio>
+#include <gtest/gtest.h>
 #include <type_traits>
 #include <rh-utils/meta.h>
 
-void meta_test::type_at_test() noexcept
+TEST(type_at, usage)
 {
-    std::printf("%s\n", __func__);
-
     using std::is_same;
     using namespace rh_utils::meta;
+
     static_assert(is_same<void, type_at_t<0, void>>::value, "should be true");
     static_assert(is_same<void, type_at_t<0, void, int, double>>::value, "should be true");
     static_assert(is_same<int, type_at_t<1, void, int, double>>::value, "should be true");

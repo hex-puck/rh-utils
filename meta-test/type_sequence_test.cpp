@@ -1,12 +1,9 @@
-#include "type_sequence_test.h"
-#include <cstdio>
+#include <gtest/gtest.h>
 #include <type_traits>
 #include <rh-utils/meta.h>
 
-void meta_test::type_sequence_test() noexcept
+TEST(type_sequence, usage)
 {
-    std::printf("%s\n", __func__);
-
     using std::is_same;
     using namespace rh_utils::meta;
     static_assert(type_sequence<>::size() == 0, "should be true");
