@@ -16,6 +16,8 @@ include(GNUInstallDirs)
 set(RH_INSTALL_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME})
 set(RH_BUILD_INCLUDEDIR ${CMAKE_CURRENT_BINARY_DIR}/include/${CMAKE_PROJECT_NAME})
 
+configure_file(config.h.in ${RH_BUILD_INCLUDEDIR}/config.h)
+
 add_subdirectory(meta)
 
 if ($CACHE{RH_UTILS_ENABLE_TEST})

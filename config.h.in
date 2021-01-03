@@ -1,0 +1,10 @@
+#ifndef RH_UTILS_CONFIG_H
+#define RH_UTILS_CONFIG_H
+
+#if defined(_MSVC_LANG)
+# define RH_CXX_STANDARD _MSVC_LANG
+#else
+# define RH_CXX_STANDARD __cplusplus
+#endif
+
+#endif //RH_UTILS_CONFIG_H
