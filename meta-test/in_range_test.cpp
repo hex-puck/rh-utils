@@ -1,8 +1,6 @@
-#include "in_range_test.h"
-#include <cstdio>
+#include <gtest/gtest.h>
 #include <rh-utils/meta.h>
 
-void meta_test::in_range_test() noexcept
+TEST(in_range, usage)
 {
-    std::printf("%s\n", __func__);
 }
