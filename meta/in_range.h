@@ -118,7 +118,7 @@ namespace rh_utils {
         {
             static_assert(std::numeric_limits<T>::lowest()
                           <= static_cast<std::make_signed_t<U>>(std::numeric_limits<U>::lowest()), "should be true");
-            return v <= static_cast<std::make_unsigned_t<T>>(std::numeric_limits<T>::max())
+            return v <= static_cast<std::make_unsigned_t<T>>(std::numeric_limits<T>::max());
         }
     }
 }
