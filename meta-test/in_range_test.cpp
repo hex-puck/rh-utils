@@ -43,3 +43,20 @@ TEST(in_range, integral_unsigned_unsigned)
     EXPECT_FALSE(in_range<std::uint8_t>(nl<std::uint32_t>::max()));
     EXPECT_TRUE(in_range<std::uint8_t>(nl<std::uint32_t>::lowest()));
 }
+
+TEST(in_range, integral_signed_signed)
+{
+    using namespace rh_utils::meta;
+
+    // equal size
+    EXPECT_TRUE(in_range<std::int32_t>(nl<std::int32_t>::max()));
+    EXPECT_TRUE(in_range<std::int32_t>(nl<std::int32_t>::lowest()));
+
+    // small -> big
+    EXPECT_TRUE(in_range<std::int32_t>(nl<std::int8_t>::max()));
+    EXPECT_TRUE(in_range<std::int32_t>(nl<std::int8_t>::lowest()));
+
+    // big -> small
+    EXPECT_FALSE(in_range<std::int8_t>(nl<std::int32_t>::max()));
+    EXPECT_FALSE(in_range<std::int8_t>(nl<std::int32_t>::lowest()));
+}
