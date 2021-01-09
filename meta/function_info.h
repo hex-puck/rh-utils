@@ -20,6 +20,15 @@ namespace rh_utils {
             using parameter_type = typename parameter_sequence::template type<I>;
             using return_type = R;
         };
+
+        template<typename C, typename R, typename ...Args>
+        struct function_info<R(C::*)(Args...)>
+                : public function_info<R(Args...)>
+        {
+            using class_type = C;
+            using type = R(C::*)(std::decay_t<Args>...);
+            using bare_type = typename function_info<R(Args...)>::type;
+        };
     }
 }
 
