@@ -2,6 +2,7 @@
 #define RH_UTILS_META_H
 
 #include <rh-utils/meta/function_info.h>
+#include <rh-utils/meta/has_member.h>
 #include <rh-utils/meta/in_range.h>
 #include <rh-utils/meta/type_at.h>
 #include <rh-utils/meta/type_sequence.h>
