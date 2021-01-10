@@ -16,21 +16,21 @@ namespace rh_utils {                                                            
     }                                                                                                                \
 }
 
-#define RH_HAS_MEMBER_FUNCTION(Member)                                                                    \
-namespace rh_utils {                                                                                      \
-    namespace meta {                                                                                      \
-        template<typename C, typename ...Args>                                                            \
-        struct has_member_function_##Member                                                               \
-        {                                                                                                 \
-        private:                                                                                          \
-            template<typename U, typename ...Args0>                                                       \
-            static std::true_type invoke(decltype(std::declval<U>().Member(std::declval<Args0>()...)) *); \
-            template<typename ...>                                                                        \
-            static std::false_type invoke(...);                                                           \
-        public:                                                                                           \
-            enum { value = decltype(invoke<C, Args...>(nullptr))::value };                                \
-        };                                                                                                \
-    }                                                                                                     \
+#define RH_HAS_MEMBER_CALLABLE(Member)                                                                  \
+namespace rh_utils {                                                                                    \
+    namespace meta {                                                                                    \
+        template<typename C, typename ...Args>                                                          \
+        struct has_member_callable_##Member                                                             \
+        {                                                                                               \
+        private:                                                                                        \
+            template<typename U, typename ...Args0>                                                     \
+            static std::true_type test(decltype(std::declval<U>().Member(std::declval<Args0>()...)) *); \
+            template<typename ...>                                                                      \
+            static std::false_type test(...);                                                           \
+        public:                                                                                         \
+            enum { value = decltype(test<C, Args...>(nullptr))::value };                                \
+        };                                                                                              \
+    }                                                                                                   \
 }
 
 #endif //RH_UTILS_HAS_MEMBER_H
