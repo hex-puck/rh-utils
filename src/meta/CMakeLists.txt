@@ -1,20 +1,15 @@
 add_library(meta INTERFACE)
-target_include_directories(meta INTERFACE
-        $<BUILD_INTERFACE:${RH_BUILD_INCLUDEDIR}/..>
-        $<INSTALL_INTERFACE:include>
+target_link_libraries(meta INTERFACE ${RH_ENV_TARGET})
+
+install(TARGETS meta
+        EXPORT ${RH_EXPORT_PREFIX}meta${RH_EXPORT_SUFFIX}
         )
 
-file(GLOB headers RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.h)
-list(REMOVE_ITEM headers meta.h)
-
-if (headers)
-    file(COPY ${headers} DESTINATION ${RH_BUILD_INCLUDEDIR}/meta)
-    install(FILES ${headers} DESTINATION ${RH_INSTALL_INCLUDEDIR}/meta)
-endif ()
-
-file(COPY meta.h DESTINATION ${RH_BUILD_INCLUDEDIR})
-install(FILES meta.h DESTINATION ${RH_INSTALL_INCLUDEDIR})
-
-install(TARGETS meta EXPORT meta-config)
-install(EXPORT meta-config DESTINATION lib/cmake/meta
-        NAMESPACE rh-utils::)
+export(EXPORT ${RH_EXPORT_PREFIX}meta${RH_EXPORT_SUFFIX}
+        NAMESPACE ${RH_EXPORT_NAMESPACE}
+        FILE ${RH_BUILD_CMAKE_DIR}/${RH_EXPORT_PREFIX}meta${RH_EXPORT_SUFFIX}.cmake
+        )
+install(EXPORT ${RH_EXPORT_PREFIX}meta${RH_EXPORT_SUFFIX}
+        DESTINATION ${RH_INSTALL_CMAKE_DIR}
+        NAMESPACE ${RH_EXPORT_NAMESPACE}
+        )
