@@ -1,0 +1,5 @@
+@PACKAGE_INIT@
+
+include(${CMAKE_CURRENT_LIST_DIR}/rh-utils-env-targets.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/rh-utils-meta-targets.cmake)
+check_required_components(@PROJECT_NAME@)
