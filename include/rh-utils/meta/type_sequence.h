@@ -4,19 +4,13 @@
 #include <rh-utils/meta/type_at.h>
 
 namespace rh_utils {
-    namespace meta {
-        template<typename... Args>
-        struct type_sequence
-        {
-            static constexpr std::size_t size() noexcept
-            {
-                return sizeof...(Args);
-            }
+namespace meta {
+template <typename... Args> struct type_sequence {
+  static constexpr std::size_t size() noexcept { return sizeof...(Args); }
 
-            template<std::size_t I>
-            using type = type_at_t<I, Args...>;
-        };
-    }
-}
+  template <std::size_t I> using type = type_at_t<I, Args...>;
+};
+} // namespace meta
+} // namespace rh_utils
 
-#endif //RH_UTILS_TYPE_SEQUENCE_H
+#endif // RH_UTILS_TYPE_SEQUENCE_H
