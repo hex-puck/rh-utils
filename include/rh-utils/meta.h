@@ -8,4 +8,4 @@
 #include <rh-utils/meta/type_sequence.h>
 #include <rh-utils/meta/void_t.h>
 
-#endif //RH_UTILS_META_H
+#endif // RH_UTILS_META_H
