@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.16)
 project(rh-utils
         VERSION 0.1
         DESCRIPTION "C++14 下的工具集"
