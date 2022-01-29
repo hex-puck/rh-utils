@@ -12,6 +12,9 @@ template <std::size_t I, typename T>
 struct tuple_element : public std::tuple_element<I, T> {};
 template <std::size_t I, typename T>
 using tuple_element_t = typename tuple_element<I, T>::type;
+
+template <typename> struct to_tuple;
+template <typename T> using to_tuple_t = typename to_tuple<T>::type;
 } // namespace meta
 } // namespace rh_utils
 
