@@ -8,15 +8,13 @@
 #endif
 
 namespace rh_utils {
-    namespace meta {
+namespace meta {
 #if RH_CXX_STANDARD < 201703L
-        template<typename ...Args>
-        using void_t = void;
+template <typename... Args> using void_t = void;
 #else
-        template<typename ...Args>
-        using void_t = std::void_t<Args...>;
+template <typename... Args> using void_t = std::void_t<Args...>;
 #endif
-    }
-}
+} // namespace meta
+} // namespace rh_utils
 
-#endif //RH_UTILS_VOID_T_H
+#endif // RH_UTILS_VOID_T_H

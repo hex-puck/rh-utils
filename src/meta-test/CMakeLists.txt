@@ -5,5 +5,4 @@ add_executable(meta-test
         function_info_test.cpp
         has_member_test.cpp
         )
-target_link_libraries(meta-test meta)
-target_link_libraries(meta-test GTest::gtest GTest::gtest_main)
+target_link_libraries(meta-test PRIVATE meta GTest::gtest GTest::gtest_main)
