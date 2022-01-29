@@ -21,4 +21,12 @@ TEST(type_sequence, usage) {
   EXPECT_TRUE((is_same<char, typename test_seq_2::type<0>>::value));
   EXPECT_TRUE((is_same<unsigned char, typename test_seq_2::type<1>>::value));
   EXPECT_TRUE((is_same<signed char, typename test_seq_2::type<2>>::value));
+
+  using test_seq_2_1 = type_sequence<char, unsigned char>;
+  using test_seq_2_2 = type_sequence<signed char>;
+  using splitter = type_sequence_splitter<2, test_seq_2>;
+  EXPECT_TRUE((is_same<test_seq_2_1, test_seq_2::rebind<0, 1>::other>::value));
+  EXPECT_TRUE((is_same<test_seq_2_2, test_seq_2::rebind<2>::other>::value));
+  EXPECT_TRUE((is_same<test_seq_2_1, splitter::front>::value));
+  EXPECT_TRUE((is_same<test_seq_2_2, splitter::back>::value));
 }
