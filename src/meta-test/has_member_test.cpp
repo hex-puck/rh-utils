@@ -8,9 +8,9 @@ TEST(has_member, usage) {
   using namespace rh_utils::meta;
 
   using class_t1 = struct { int foo; };
-  using class_t2 = struct { void foo(); };
+  using class_t2 = struct class_t2 { void foo(); };
   using class_t3 = struct {};
-  using class_t4 = struct {
+  using class_t4 = struct class_t4 {
     void foo();
     void foo() const;
     void foo(int);
