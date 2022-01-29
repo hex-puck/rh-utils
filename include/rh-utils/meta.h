@@ -1,3 +1,8 @@
+/**
+ *  @file
+ *  Interface header of `meta` directory.
+ */
+
 #ifndef RH_UTILS_META_H
 #define RH_UTILS_META_H
 

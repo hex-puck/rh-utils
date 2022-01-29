@@ -1,3 +1,8 @@
+/**
+ *  @file
+ *  Package configure header.
+ */
+
 #ifndef RH_UTILS_CONFIG_H
 #define RH_UTILS_CONFIG_H
 
