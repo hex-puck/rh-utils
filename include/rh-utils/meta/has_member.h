@@ -5,6 +5,11 @@
 #include <type_traits>
 #include <utility>
 
+/**
+ *  @brief define a class which can test `<class>.<member>` is or not well-form
+ *
+ *  Define `rh_utils::meta::has_member_object_##Member` class.
+ */
 #define RH_HAS_MEMBER_OBJECT(Member)                                           \
   namespace rh_utils {                                                         \
   namespace meta {                                                             \
@@ -18,6 +23,12 @@
   }                                                                            \
   }
 
+/**
+ *  @brief define a class which can test `<class>.<member>(Args...)` is or not
+ *  well-form
+ *
+ *  Define `rh_utils::meta::has_member_object_##Member` class.
+ */
 #define RH_HAS_MEMBER_CALLABLE(Member)                                         \
   namespace rh_utils {                                                         \
   namespace meta {                                                             \
