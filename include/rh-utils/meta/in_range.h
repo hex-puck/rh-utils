@@ -6,14 +6,23 @@
 
 namespace rh_utils {
 namespace meta {
-// convert between same type
+/**
+ *  @brief judge is or not in_range when same type
+ *  @tparam T target type
+ *  @tparam U original type
+ */
 template <typename T, typename U,
           std::enable_if_t<std::is_same<T, U>::value> * = nullptr>
 constexpr bool in_range(U /*v*/) noexcept {
   return true;
 }
 
-// convert between unsigned integral
+/**
+ *  @brief judge is or not in_range between unsigned integer type
+ *  @note only enabled when `sizeof(T) >= sizeof(U)`
+ *  @tparam T target type, should be unsigned integer type
+ *  @tparam U original type, should be unsigned integer type
+ */
 template <
     typename T, typename U,
     std::enable_if_t<!std::is_same<T, U>::value && std::is_integral<T>::value &&
@@ -29,6 +38,12 @@ constexpr bool in_range(U /*v*/) noexcept {
   return true;
 }
 
+/**
+ *  @brief judge is or not in_range between unsigned integer type
+ *  @note only enabled when `sizeof(T) < sizeof(U)`
+ *  @tparam T target type, should be unsigned integer type
+ *  @tparam U original type, should be unsigned integer type
+ */
 template <
     typename T, typename U,
     std::enable_if_t<!std::is_same<T, U>::value && std::is_integral<T>::value &&
@@ -42,7 +57,12 @@ constexpr bool in_range(U v) noexcept {
   return v <= std::numeric_limits<T>::max();
 }
 
-// convert between signed integral
+/**
+ *  @brief judge is or not in_range between signed integer type
+ *  @note only enabled when `sizeof(T) >= sizeof(U)`
+ *  @tparam T target type, should be signed integer type
+ *  @tparam U original type, should be signed integer type
+ */
 template <typename T, typename U,
           std::enable_if_t<
               !std::is_same<T, U>::value && std::is_integral<T>::value &&
@@ -57,6 +77,12 @@ constexpr bool in_range(U /*v*/) noexcept {
   return true;
 }
 
+/**
+ *  @brief judge is or not in_range between signed integer type
+ *  @note only enabled when `sizeof(T) < sizeof(U)`
+ *  @tparam T target type, should be signed integer type
+ *  @tparam U original type, should be signed integer type
+ */
 template <typename T, typename U,
           std::enable_if_t<
               !std::is_same<T, U>::value && std::is_integral<T>::value &&
@@ -67,7 +93,12 @@ constexpr bool in_range(U v) noexcept {
          v <= std::numeric_limits<T>::max();
 }
 
-// convert signed integral to unsigned integral
+/**
+ *  @brief judge is or not in_range when signed to unsigned
+ *  @note only enabled when `sizeof(T) >= sizeof(U)`
+ *  @tparam T target type, should be unsigned integer type
+ *  @tparam U original type, should be signed integer type
+ */
 template <typename T, typename U,
           std::enable_if_t<
               !std::is_same<T, U>::value && std::is_integral<T>::value &&
@@ -82,6 +113,12 @@ constexpr bool in_range(U v) noexcept {
          v;
 }
 
+/**
+ *  @brief judge is or not in_range when signed to unsigned
+ *  @note only enabled when `sizeof(T) < sizeof(U)`
+ *  @tparam T target type, should be unsigned integer type
+ *  @tparam U original type, should be signed integer type
+ */
 template <typename T, typename U,
           std::enable_if_t<
               !std::is_same<T, U>::value && std::is_integral<T>::value &&
@@ -96,7 +133,12 @@ constexpr bool in_range(U v) noexcept {
   return false;
 }
 
-// convert unsigned integral to signed integral
+/**
+ *  @brief judge is or not in_range when unsigned to signed
+ *  @note only enabled when `sizeof(T) > sizeof(U)`
+ *  @tparam T target type, should be signed integer type
+ *  @tparam U original type, should be unsigned integer type
+ */
 template <
     typename T, typename U,
     std::enable_if_t<!std::is_same<T, U>::value && std::is_integral<T>::value &&
@@ -115,6 +157,12 @@ constexpr bool in_range(U /*v*/) noexcept {
   return true;
 }
 
+/**
+ *  @brief judge is or not in_range when unsigned to signed
+ *  @note only enabled when `sizeof(T) <= sizeof(U)`
+ *  @tparam T target type, should be signed integer type
+ *  @tparam U original type, should be unsigned integer type
+ */
 template <
     typename T, typename U,
     std::enable_if_t<!std::is_same<T, U>::value && std::is_integral<T>::value &&
