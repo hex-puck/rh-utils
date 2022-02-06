@@ -5,8 +5,9 @@
 
 namespace rh_utils {
 namespace meta {
+/// @brief extract type at the given position
 template <std::size_t I, typename... Args> struct type_at;
-
+/// @brief convenience type alias of `type_at`
 template <std::size_t I, typename... Args>
 using type_at_t = typename type_at<I, Args...>::type;
 
