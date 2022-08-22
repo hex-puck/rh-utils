@@ -1,5 +1,27 @@
 @PACKAGE_INIT@
 
-include(${CMAKE_CURRENT_LIST_DIR}/rh-utils-env-targets.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/rh-utils-meta-targets.cmake)
+macro(rh_include)
+  set(targets "${ARGV}")
+  foreach(target IN LISTS targets)
+    if(NOT DEFINED CONFIG_${target})
+      set_and_check(CONFIG_${target} ${CMAKE_CURRENT_LIST_DIR}/rh-utils-${target}.cmake)
+      include(${CONFIG_${target}})
+    endif()
+  endforeach()
+  unset(targets)
+endmacro()
+
+rh_include(headers)
+
+foreach(comp IN LISTS @PROJECT_NAME@_FIND_COMPONENTS)
+  set(comp_ok FALSE)
+  if(comp STREQUAL meta)
+    rh_include(headers meta)
+    set(comp_ok TRUE)
+  endif()
+
+  set(@PROJECT_NAME@_${comp}_FOUND ${comp_ok})
+  unset(comp_ok)
+endforeach()
+
 check_required_components(@PROJECT_NAME@)
