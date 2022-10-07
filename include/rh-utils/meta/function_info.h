@@ -21,12 +21,12 @@ template <typename> struct function_info;
  */
 template <typename R, typename... Args> struct function_info<R(Args...)> {
   /// @brief the given function type
-  using type = R(std::decay_t<Args>...);
+  using type = R(Args...);
   /**
    *  @brief type_sequence of parameter types of `type`
    *  @sa @ref type_sequence
    */
-  using parameter_sequence = type_sequence<std::decay_t<Args>...>;
+  using parameter_sequence = type_sequence<Args...>;
 
   /**
    *  @brief parameter type at given position
@@ -49,7 +49,7 @@ struct function_info<R (C::*)(Args...)> : public function_info<R(Args...)> {
   /// @brief owner class
   using class_type = C;
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...);
+  using type = R (C::*)(Args...);
   /// @brief regular function type of `type`
   using bare_type = typename function_info<R(Args...)>::type;
 };
@@ -64,7 +64,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) const>
     : public function_info<R (C::*)(Args...)> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const;
+  using type = R (C::*)(Args...) const;
 };
 
 /**
@@ -77,7 +77,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) volatile>
     : public function_info<R (C::*)(Args...)> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) volatile;
+  using type = R (C::*)(Args...) volatile;
 };
 
 /**
@@ -90,7 +90,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) const volatile>
     : public function_info<R (C::*)(Args...)> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const volatile;
+  using type = R (C::*)(Args...) const volatile;
 };
 
 #if RH_CXX_STANDARD >= 201103L
@@ -104,7 +104,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) &>
     : public function_info<R (C::*)(Args...)> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) &;
+  using type = R (C::*)(Args...) &;
 };
 
 /**
@@ -117,7 +117,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) const &>
     : public function_info<R (C::*)(Args...)> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const &;
+  using type = R (C::*)(Args...) const &;
 };
 
 /**
@@ -130,7 +130,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) volatile &>
     : public function_info<R (C::*)(Args...)> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) volatile &;
+  using type = R (C::*)(Args...) volatile &;
 };
 
 /**
@@ -143,7 +143,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) const volatile &>
     : public function_info<R (C::*)(Args...)> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const volatile &;
+  using type = R (C::*)(Args...) const volatile &;
 };
 
 /**
@@ -156,7 +156,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) &&>
     : public function_info<R (C::*)(Args...)> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) &&;
+  using type = R (C::*)(Args...) &&;
 };
 
 /**
@@ -169,7 +169,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) const &&>
     : public function_info<R (C::*)(Args...)> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const &&;
+  using type = R (C::*)(Args...) const &&;
 };
 
 /**
@@ -182,7 +182,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) volatile &&>
     : public function_info<R (C::*)(Args...)> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) volatile &&;
+  using type = R (C::*)(Args...) volatile &&;
 };
 
 /**
@@ -195,7 +195,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) const volatile &&>
     : public function_info<R (C::*)(Args...)> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const volatile &&;
+  using type = R (C::*)(Args...) const volatile &&;
 };
 #endif
 #if RH_CXX_STANDARD >= 201703L
@@ -207,7 +207,7 @@ struct function_info<R (C::*)(Args...) const volatile &&>
 template <typename R, typename... Args>
 struct function_info<R(Args...) noexcept> : public function_info<R(Args...)> {
   /// @brief member function pointer type
-  using type = R(std::decay_t<Args>...) noexcept;
+  using type = R(Args...) noexcept;
 };
 
 /**
@@ -222,7 +222,7 @@ struct function_info<R (C::*)(Args...) noexcept>
   /// @brief owner class
   using class_type = C;
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) noexcept;
+  using type = R (C::*)(Args...) noexcept;
   /// @brief regular function type of `type`
   using bare_type = typename function_info<R(Args...) noexcept>::type;
 };
@@ -237,7 +237,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) const noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const noexcept;
+  using type = R (C::*)(Args...) const noexcept;
 };
 
 /**
@@ -250,7 +250,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) volatile noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) volatile noexcept;
+  using type = R (C::*)(Args...) volatile noexcept;
 };
 
 /**
@@ -263,7 +263,7 @@ template <typename C, typename R, typename... Args>
 struct function_info<R (C::*)(Args...) const volatile noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const volatile noexcept;
+  using type = R (C::*)(Args...) const volatile noexcept;
 };
 
 /**
@@ -273,10 +273,10 @@ struct function_info<R (C::*)(Args...) const volatile noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) &noexcept>
+struct function_info<R (C::*)(Args...) & noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) &noexcept;
+  using type = R (C::*)(Args...) &noexcept;
 };
 
 /**
@@ -286,10 +286,10 @@ struct function_info<R (C::*)(Args...) &noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const &noexcept>
+struct function_info<R (C::*)(Args...) const & noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const &noexcept;
+  using type = R (C::*)(Args...) const &noexcept;
 };
 
 /**
@@ -299,10 +299,10 @@ struct function_info<R (C::*)(Args...) const &noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) volatile &noexcept>
+struct function_info<R (C::*)(Args...) volatile & noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) volatile &noexcept;
+  using type = R (C::*)(Args...) volatile &noexcept;
 };
 
 /**
@@ -312,10 +312,10 @@ struct function_info<R (C::*)(Args...) volatile &noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const volatile &noexcept>
+struct function_info<R (C::*)(Args...) const volatile & noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const volatile &noexcept;
+  using type = R (C::*)(Args...) const volatile &noexcept;
 };
 
 /**
@@ -325,10 +325,10 @@ struct function_info<R (C::*)(Args...) const volatile &noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) &&noexcept>
+struct function_info<R (C::*)(Args...) && noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) &&noexcept;
+  using type = R (C::*)(Args...) &&noexcept;
 };
 
 /**
@@ -338,10 +338,10 @@ struct function_info<R (C::*)(Args...) &&noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const &&noexcept>
+struct function_info<R (C::*)(Args...) const && noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const &&noexcept;
+  using type = R (C::*)(Args...) const &&noexcept;
 };
 
 /**
@@ -351,10 +351,10 @@ struct function_info<R (C::*)(Args...) const &&noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) volatile &&noexcept>
+struct function_info<R (C::*)(Args...) volatile && noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) volatile &&noexcept;
+  using type = R (C::*)(Args...) volatile &&noexcept;
 };
 
 /**
@@ -364,10 +364,10 @@ struct function_info<R (C::*)(Args...) volatile &&noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const volatile &&noexcept>
+struct function_info<R (C::*)(Args...) const volatile && noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
-  using type = R (C::*)(std::decay_t<Args>...) const volatile &&noexcept;
+  using type = R (C::*)(Args...) const volatile &&noexcept;
 };
 #endif
 } // namespace meta
