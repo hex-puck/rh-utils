@@ -273,7 +273,7 @@ struct function_info<R (C::*)(Args...) const volatile noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) &noexcept>
+struct function_info<R (C::*)(Args...) & noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
   using type = R (C::*)(std::decay_t<Args>...) &noexcept;
@@ -286,7 +286,7 @@ struct function_info<R (C::*)(Args...) &noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const &noexcept>
+struct function_info<R (C::*)(Args...) const & noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
   using type = R (C::*)(std::decay_t<Args>...) const &noexcept;
@@ -299,7 +299,7 @@ struct function_info<R (C::*)(Args...) const &noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) volatile &noexcept>
+struct function_info<R (C::*)(Args...) volatile & noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
   using type = R (C::*)(std::decay_t<Args>...) volatile &noexcept;
@@ -312,7 +312,7 @@ struct function_info<R (C::*)(Args...) volatile &noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const volatile &noexcept>
+struct function_info<R (C::*)(Args...) const volatile & noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
   using type = R (C::*)(std::decay_t<Args>...) const volatile &noexcept;
@@ -325,7 +325,7 @@ struct function_info<R (C::*)(Args...) const volatile &noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) &&noexcept>
+struct function_info<R (C::*)(Args...) && noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
   using type = R (C::*)(std::decay_t<Args>...) &&noexcept;
@@ -338,7 +338,7 @@ struct function_info<R (C::*)(Args...) &&noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const &&noexcept>
+struct function_info<R (C::*)(Args...) const && noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
   using type = R (C::*)(std::decay_t<Args>...) const &&noexcept;
@@ -351,7 +351,7 @@ struct function_info<R (C::*)(Args...) const &&noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) volatile &&noexcept>
+struct function_info<R (C::*)(Args...) volatile && noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
   using type = R (C::*)(std::decay_t<Args>...) volatile &&noexcept;
@@ -364,7 +364,7 @@ struct function_info<R (C::*)(Args...) volatile &&noexcept>
  *  @tparam Args package of parameter types of member function
  */
 template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const volatile &&noexcept>
+struct function_info<R (C::*)(Args...) const volatile && noexcept>
     : public function_info<R (C::*)(Args...) noexcept> {
   /// @brief member function pointer type
   using type = R (C::*)(std::decay_t<Args>...) const volatile &&noexcept;
