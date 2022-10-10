@@ -6,13 +6,13 @@
 namespace rh_utils {
 namespace meta {
 /// @brief just std::tuple
-template <typename... Args> using tuple = std::tuple<Args...>;
+using std::tuple;
 
 /// @brief promoted version of std::tuple_size
-template <typename T> struct tuple_size : public std::tuple_size<T> {};
+template <typename T> struct tuple_size : std::tuple_size<T> {};
 /// @brief promoted version of std::tuple_element
 template <std::size_t I, typename T>
-struct tuple_element : public std::tuple_element<I, T> {};
+struct tuple_element : std::tuple_element<I, T> {};
 /// @brief convenience type alias of `tuple_element`
 template <std::size_t I, typename T>
 using tuple_element_t = typename tuple_element<I, T>::type;

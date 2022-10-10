@@ -14,7 +14,7 @@ namespace meta {
 template <typename... Args> using void_t = void;
 #else
 /// @brief just `std::void_t`
-template <typename... Args> using void_t = std::void_t<Args...>;
+using std::void_t;
 #endif
 } // namespace meta
 } // namespace rh_utils

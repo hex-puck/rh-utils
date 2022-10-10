@@ -17,7 +17,6 @@ template <typename T, typename... Args> struct type_at<0, T, Args...> {
 
 template <std::size_t I, typename T, typename... Args>
 struct type_at<I, T, Args...> {
-  static_assert(I < sizeof...(Args) + 1, "index is too large");
   using type = type_at_t<I - 1, Args...>;
 };
 } // namespace meta
