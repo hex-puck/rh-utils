@@ -8,368 +8,97 @@
 namespace rh_utils {
 namespace meta {
 /**
- *  @brief Parse function and member function pointer type
- *
- *  Primary template is undefined. See other specialization for more information
+ *  @brief Parse function and member function type
  */
 template <typename> struct function_info;
 
-/**
- *  @brief Parse function type
- *  @tparam R return type of function
- *  @tparam Args package of parameter types of function
- */
-template <typename R, typename... Args> struct function_info<R(Args...)> {
-  /// @brief the given function type
-  using type = R(Args...);
-  /**
-   *  @brief type_sequence of parameter types of `type`
-   *  @sa @ref type_sequence
-   */
-  using parameter_sequence = type_sequence<Args...>;
-
-  /**
-   *  @brief parameter type at given position
-   *  @tparam I parameter index
-   */
-  template <std::size_t I>
+#define RH_UTILS_LOCAL_FI_COMMON_MEMBER(Ret_, Args_)                           \
+  using return_type = Ret_;                                                    \
+  using parameter_sequence = type_sequence<Args_...>;                          \
+  template <std::size_t I>                                                     \
   using parameter_type = typename parameter_sequence::template type<I>;
-  /// @brief return type of `type`
-  using return_type = R;
-};
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...)> : public function_info<R(Args...)> {
-  /// @brief owner class
-  using class_type = C;
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...);
-  /// @brief regular function type of `type`
-  using bare_type = typename function_info<R(Args...)>::type;
-};
+#define RH_UTILS_LOCAL_DEFINE_FI_FT_true(Ret_, Args_) Ret_(Args_..., ...)
+#define RH_UTILS_LOCAL_DEFINE_FI_FT_false(Ret_, Args_) Ret_(Args_...)
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const>
-    : public function_info<R (C::*)(Args...)> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const;
-};
+#define RH_UTILS_LOCAL_DEFINE_FI(Amend_, Variadic_)                            \
+  template <typename Ret, typename... Args>                                    \
+  struct function_info<RH_UTILS_LOCAL_DEFINE_FI_FT_##Variadic_(Ret, Args)      \
+                           Amend_> {                                           \
+    using type = RH_UTILS_LOCAL_DEFINE_FI_FT_##Variadic_(Ret, Args) Amend_;    \
+    RH_UTILS_LOCAL_FI_COMMON_MEMBER(Ret, Args)                                 \
+  };
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) volatile>
-    : public function_info<R (C::*)(Args...)> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) volatile;
-};
+RH_UTILS_LOCAL_DEFINE_FI(, false)
+RH_UTILS_LOCAL_DEFINE_FI(, true)
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const volatile>
-    : public function_info<R (C::*)(Args...)> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const volatile;
-};
+RH_UTILS_LOCAL_DEFINE_FI(const, false)
+RH_UTILS_LOCAL_DEFINE_FI(volatile, false)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile, false)
+
+RH_UTILS_LOCAL_DEFINE_FI(const, true)
+RH_UTILS_LOCAL_DEFINE_FI(volatile, true)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile, true)
 
 #if RH_CXX_STANDARD >= 201103L
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) &>
-    : public function_info<R (C::*)(Args...)> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) &;
-};
+RH_UTILS_LOCAL_DEFINE_FI(&, false)
+RH_UTILS_LOCAL_DEFINE_FI(const &, false)
+RH_UTILS_LOCAL_DEFINE_FI(volatile &, false)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile &, false)
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const &>
-    : public function_info<R (C::*)(Args...)> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const &;
-};
+RH_UTILS_LOCAL_DEFINE_FI(&, true)
+RH_UTILS_LOCAL_DEFINE_FI(const &, true)
+RH_UTILS_LOCAL_DEFINE_FI(volatile &, true)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile &, true)
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) volatile &>
-    : public function_info<R (C::*)(Args...)> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) volatile &;
-};
+RH_UTILS_LOCAL_DEFINE_FI(&&, false)
+RH_UTILS_LOCAL_DEFINE_FI(const &&, false)
+RH_UTILS_LOCAL_DEFINE_FI(volatile &&, false)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile &&, false)
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const volatile &>
-    : public function_info<R (C::*)(Args...)> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const volatile &;
-};
-
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) &&>
-    : public function_info<R (C::*)(Args...)> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) &&;
-};
-
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const &&>
-    : public function_info<R (C::*)(Args...)> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const &&;
-};
-
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) volatile &&>
-    : public function_info<R (C::*)(Args...)> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) volatile &&;
-};
-
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const volatile &&>
-    : public function_info<R (C::*)(Args...)> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const volatile &&;
-};
+RH_UTILS_LOCAL_DEFINE_FI(&&, true)
+RH_UTILS_LOCAL_DEFINE_FI(const &&, true)
+RH_UTILS_LOCAL_DEFINE_FI(volatile &&, true)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile &&, true)
 #endif
+
 #if RH_CXX_STANDARD >= 201703L
-/**
- *  @brief Parse function info
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename R, typename... Args>
-struct function_info<R(Args...) noexcept> : public function_info<R(Args...)> {
-  /// @brief member function pointer type
-  using type = R(Args...) noexcept;
-};
+RH_UTILS_LOCAL_DEFINE_FI(noexcept, false)
+RH_UTILS_LOCAL_DEFINE_FI(noexcept, true)
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) noexcept>
-    : public function_info<R(Args...) noexcept> {
-  /// @brief owner class
-  using class_type = C;
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) noexcept;
-  /// @brief regular function type of `type`
-  using bare_type = typename function_info<R(Args...) noexcept>::type;
-};
+RH_UTILS_LOCAL_DEFINE_FI(const noexcept, false)
+RH_UTILS_LOCAL_DEFINE_FI(volatile noexcept, false)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile noexcept, false)
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const noexcept>
-    : public function_info<R (C::*)(Args...) noexcept> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const noexcept;
-};
+RH_UTILS_LOCAL_DEFINE_FI(const noexcept, true)
+RH_UTILS_LOCAL_DEFINE_FI(volatile noexcept, true)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile noexcept, true)
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) volatile noexcept>
-    : public function_info<R (C::*)(Args...) noexcept> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) volatile noexcept;
-};
+RH_UTILS_LOCAL_DEFINE_FI(&noexcept, false)
+RH_UTILS_LOCAL_DEFINE_FI(const &noexcept, false)
+RH_UTILS_LOCAL_DEFINE_FI(volatile &noexcept, false)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile &noexcept, false)
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const volatile noexcept>
-    : public function_info<R (C::*)(Args...) noexcept> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const volatile noexcept;
-};
+RH_UTILS_LOCAL_DEFINE_FI(&noexcept, true)
+RH_UTILS_LOCAL_DEFINE_FI(const &noexcept, true)
+RH_UTILS_LOCAL_DEFINE_FI(volatile &noexcept, true)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile &noexcept, true)
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) & noexcept>
-    : public function_info<R (C::*)(Args...) noexcept> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) &noexcept;
-};
+RH_UTILS_LOCAL_DEFINE_FI(&&noexcept, false)
+RH_UTILS_LOCAL_DEFINE_FI(const &&noexcept, false)
+RH_UTILS_LOCAL_DEFINE_FI(volatile &&noexcept, false)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile &&noexcept, false)
 
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const & noexcept>
-    : public function_info<R (C::*)(Args...) noexcept> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const &noexcept;
-};
-
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) volatile & noexcept>
-    : public function_info<R (C::*)(Args...) noexcept> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) volatile &noexcept;
-};
-
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const volatile & noexcept>
-    : public function_info<R (C::*)(Args...) noexcept> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const volatile &noexcept;
-};
-
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) && noexcept>
-    : public function_info<R (C::*)(Args...) noexcept> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) &&noexcept;
-};
-
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const && noexcept>
-    : public function_info<R (C::*)(Args...) noexcept> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const &&noexcept;
-};
-
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) volatile && noexcept>
-    : public function_info<R (C::*)(Args...) noexcept> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) volatile &&noexcept;
-};
-
-/**
- *  @brief Parse member function pointer info
- *  @tparam C owner class
- *  @tparam R return type of member function
- *  @tparam Args package of parameter types of member function
- */
-template <typename C, typename R, typename... Args>
-struct function_info<R (C::*)(Args...) const volatile && noexcept>
-    : public function_info<R (C::*)(Args...) noexcept> {
-  /// @brief member function pointer type
-  using type = R (C::*)(Args...) const volatile &&noexcept;
-};
+RH_UTILS_LOCAL_DEFINE_FI(&&noexcept, true)
+RH_UTILS_LOCAL_DEFINE_FI(const &&noexcept, true)
+RH_UTILS_LOCAL_DEFINE_FI(volatile &&noexcept, true)
+RH_UTILS_LOCAL_DEFINE_FI(const volatile &&noexcept, true)
 #endif
+
+#undef RH_UTILS_LOCAL_FI_COMMON_MEMBER
+#undef RH_UTILS_LOCAL_DEFINE_FI_FT_true
+#undef RH_UTILS_LOCAL_DEFINE_FI_FT_false
+#undef RH_UTILS_LOCAL_DEFINE_FI
 } // namespace meta
 } // namespace rh_utils
 
