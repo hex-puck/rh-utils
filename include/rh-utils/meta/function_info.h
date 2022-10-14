@@ -12,6 +12,16 @@ namespace meta {
  */
 template <typename> struct function_info;
 
+/**
+ *  @brief Check if type is variadic function type
+ */
+template <typename> struct is_variadic_function : std::false_type {};
+
+#if RH_CXX_STANDARD >= 201703L
+template <typename T>
+inline constexpr bool is_variadic_function_v = is_variadic_function<T>::value;
+#endif
+
 #define RH_UTILS_LOCAL_FI_COMMON_MEMBER(Ret_, Args_)                           \
   using return_type = Ret_;                                                    \
   using parameter_sequence = type_sequence<Args_...>;                          \
@@ -29,76 +39,92 @@ template <typename> struct function_info;
     RH_UTILS_LOCAL_FI_COMMON_MEMBER(Ret, Args)                                 \
   };
 
-RH_UTILS_LOCAL_DEFINE_FI(, false)
-RH_UTILS_LOCAL_DEFINE_FI(, true)
+#define RH_UTILS_LOCAL_DEFINE_IVF_true(Amend_, Variadic_)                      \
+  template <typename Ret, typename... Args>                                    \
+  struct is_variadic_function<Ret(Args..., ...) Amend_> : std::true_type {};
+#define RH_UTILS_LOCAL_DEFINE_IVF_false(Amend_, Variadic_) // empty
 
-RH_UTILS_LOCAL_DEFINE_FI(const, false)
-RH_UTILS_LOCAL_DEFINE_FI(volatile, false)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile, false)
+#define RH_UTILS_LOCAL_DEFINE_IVF(Amend_, Variadic_)                           \
+  RH_UTILS_LOCAL_DEFINE_IVF_##Variadic_(Amend_, Variadic_)
 
-RH_UTILS_LOCAL_DEFINE_FI(const, true)
-RH_UTILS_LOCAL_DEFINE_FI(volatile, true)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile, true)
+#define RH_UTILS_LOCAL_DEFINE(Amend_, Variadic_)                               \
+  RH_UTILS_LOCAL_DEFINE_FI(Amend_, Variadic_)                                  \
+  RH_UTILS_LOCAL_DEFINE_IVF(Amend_, Variadic_)
+
+RH_UTILS_LOCAL_DEFINE(, false)
+RH_UTILS_LOCAL_DEFINE(, true)
+
+RH_UTILS_LOCAL_DEFINE(const, false)
+RH_UTILS_LOCAL_DEFINE(volatile, false)
+RH_UTILS_LOCAL_DEFINE(const volatile, false)
+
+RH_UTILS_LOCAL_DEFINE(const, true)
+RH_UTILS_LOCAL_DEFINE(volatile, true)
+RH_UTILS_LOCAL_DEFINE(const volatile, true)
 
 #if RH_CXX_STANDARD >= 201103L
-RH_UTILS_LOCAL_DEFINE_FI(&, false)
-RH_UTILS_LOCAL_DEFINE_FI(const &, false)
-RH_UTILS_LOCAL_DEFINE_FI(volatile &, false)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile &, false)
+RH_UTILS_LOCAL_DEFINE(&, false)
+RH_UTILS_LOCAL_DEFINE(const &, false)
+RH_UTILS_LOCAL_DEFINE(volatile &, false)
+RH_UTILS_LOCAL_DEFINE(const volatile &, false)
 
-RH_UTILS_LOCAL_DEFINE_FI(&, true)
-RH_UTILS_LOCAL_DEFINE_FI(const &, true)
-RH_UTILS_LOCAL_DEFINE_FI(volatile &, true)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile &, true)
+RH_UTILS_LOCAL_DEFINE(&, true)
+RH_UTILS_LOCAL_DEFINE(const &, true)
+RH_UTILS_LOCAL_DEFINE(volatile &, true)
+RH_UTILS_LOCAL_DEFINE(const volatile &, true)
 
-RH_UTILS_LOCAL_DEFINE_FI(&&, false)
-RH_UTILS_LOCAL_DEFINE_FI(const &&, false)
-RH_UTILS_LOCAL_DEFINE_FI(volatile &&, false)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile &&, false)
+RH_UTILS_LOCAL_DEFINE(&&, false)
+RH_UTILS_LOCAL_DEFINE(const &&, false)
+RH_UTILS_LOCAL_DEFINE(volatile &&, false)
+RH_UTILS_LOCAL_DEFINE(const volatile &&, false)
 
-RH_UTILS_LOCAL_DEFINE_FI(&&, true)
-RH_UTILS_LOCAL_DEFINE_FI(const &&, true)
-RH_UTILS_LOCAL_DEFINE_FI(volatile &&, true)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile &&, true)
+RH_UTILS_LOCAL_DEFINE(&&, true)
+RH_UTILS_LOCAL_DEFINE(const &&, true)
+RH_UTILS_LOCAL_DEFINE(volatile &&, true)
+RH_UTILS_LOCAL_DEFINE(const volatile &&, true)
 #endif
 
 #if RH_CXX_STANDARD >= 201703L
-RH_UTILS_LOCAL_DEFINE_FI(noexcept, false)
-RH_UTILS_LOCAL_DEFINE_FI(noexcept, true)
+RH_UTILS_LOCAL_DEFINE(noexcept, false)
+RH_UTILS_LOCAL_DEFINE(noexcept, true)
 
-RH_UTILS_LOCAL_DEFINE_FI(const noexcept, false)
-RH_UTILS_LOCAL_DEFINE_FI(volatile noexcept, false)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile noexcept, false)
+RH_UTILS_LOCAL_DEFINE(const noexcept, false)
+RH_UTILS_LOCAL_DEFINE(volatile noexcept, false)
+RH_UTILS_LOCAL_DEFINE(const volatile noexcept, false)
 
-RH_UTILS_LOCAL_DEFINE_FI(const noexcept, true)
-RH_UTILS_LOCAL_DEFINE_FI(volatile noexcept, true)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile noexcept, true)
+RH_UTILS_LOCAL_DEFINE(const noexcept, true)
+RH_UTILS_LOCAL_DEFINE(volatile noexcept, true)
+RH_UTILS_LOCAL_DEFINE(const volatile noexcept, true)
 
-RH_UTILS_LOCAL_DEFINE_FI(&noexcept, false)
-RH_UTILS_LOCAL_DEFINE_FI(const &noexcept, false)
-RH_UTILS_LOCAL_DEFINE_FI(volatile &noexcept, false)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile &noexcept, false)
+RH_UTILS_LOCAL_DEFINE(&noexcept, false)
+RH_UTILS_LOCAL_DEFINE(const &noexcept, false)
+RH_UTILS_LOCAL_DEFINE(volatile &noexcept, false)
+RH_UTILS_LOCAL_DEFINE(const volatile &noexcept, false)
 
-RH_UTILS_LOCAL_DEFINE_FI(&noexcept, true)
-RH_UTILS_LOCAL_DEFINE_FI(const &noexcept, true)
-RH_UTILS_LOCAL_DEFINE_FI(volatile &noexcept, true)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile &noexcept, true)
+RH_UTILS_LOCAL_DEFINE(&noexcept, true)
+RH_UTILS_LOCAL_DEFINE(const &noexcept, true)
+RH_UTILS_LOCAL_DEFINE(volatile &noexcept, true)
+RH_UTILS_LOCAL_DEFINE(const volatile &noexcept, true)
 
-RH_UTILS_LOCAL_DEFINE_FI(&&noexcept, false)
-RH_UTILS_LOCAL_DEFINE_FI(const &&noexcept, false)
-RH_UTILS_LOCAL_DEFINE_FI(volatile &&noexcept, false)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile &&noexcept, false)
+RH_UTILS_LOCAL_DEFINE(&&noexcept, false)
+RH_UTILS_LOCAL_DEFINE(const &&noexcept, false)
+RH_UTILS_LOCAL_DEFINE(volatile &&noexcept, false)
+RH_UTILS_LOCAL_DEFINE(const volatile &&noexcept, false)
 
-RH_UTILS_LOCAL_DEFINE_FI(&&noexcept, true)
-RH_UTILS_LOCAL_DEFINE_FI(const &&noexcept, true)
-RH_UTILS_LOCAL_DEFINE_FI(volatile &&noexcept, true)
-RH_UTILS_LOCAL_DEFINE_FI(const volatile &&noexcept, true)
+RH_UTILS_LOCAL_DEFINE(&&noexcept, true)
+RH_UTILS_LOCAL_DEFINE(const &&noexcept, true)
+RH_UTILS_LOCAL_DEFINE(volatile &&noexcept, true)
+RH_UTILS_LOCAL_DEFINE(const volatile &&noexcept, true)
 #endif
 
 #undef RH_UTILS_LOCAL_FI_COMMON_MEMBER
 #undef RH_UTILS_LOCAL_DEFINE_FI_FT_true
 #undef RH_UTILS_LOCAL_DEFINE_FI_FT_false
 #undef RH_UTILS_LOCAL_DEFINE_FI
+#undef RH_UTILS_LOCAL_DEFINE_IVF_true
+#undef RH_UTILS_LOCAL_DEFINE_IVF_false
+#undef RH_UTILS_LOCAL_DEFINE_IVF
+#undef RH_UTILS_LOCAL_DEFINE
 } // namespace meta
 } // namespace rh_utils
 
