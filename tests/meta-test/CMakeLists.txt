@@ -1,0 +1,1 @@
+add_compile_test(type_sequence_test type_sequence_test.cpp)
