@@ -8,6 +8,7 @@
 
 #include <rh-utils/meta/function_info.h>
 #include <rh-utils/meta/in_range.h>
+#include <rh-utils/meta/member_pointer_info.h>
 #include <rh-utils/meta/tuple.h>
 #include <rh-utils/meta/type_at.h>
 #include <rh-utils/meta/type_sequence.h>
