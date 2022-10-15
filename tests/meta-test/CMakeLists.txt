@@ -1,1 +1,2 @@
+add_compile_test(in_range_test in_range_test.cpp)
 add_compile_test(type_sequence_test type_sequence_test.cpp)
